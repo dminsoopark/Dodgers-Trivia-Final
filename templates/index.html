@@ -9,6 +9,11 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='dodgers_logo.png') }}">
 </head>
 <body>
+    {% extends "base.html" %}
+
+    {% block title %} Dodgers Trivia {% endblock %}
+
+    {% block content %}
     <div id="app">
         <h1>Dodgers Trivia</h1>
         <div id="question"></div>
@@ -79,5 +84,6 @@
             getQuestion();
         });
     </script>
+    {% endblock %}
 </body>
 </html>
