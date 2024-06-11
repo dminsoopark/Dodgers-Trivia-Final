@@ -1,0 +1,83 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dodgers Trivia</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='dodgers_logo.png') }}">
+</head>
+<body>
+    <div id="app">
+        <h1>Dodgers Trivia</h1>
+        <div id="question"></div>
+        <input type="text" id="answer" placeholder="Your answer">
+        <button onclick="submitAnswer()">Submit</button>
+        <div id="results"></div>
+    </div>
+    <script>
+        async function submitAnswer() {
+            const questionElement = document.getElementById('question');
+            const answerElement = document.getElementById('answer');
+            const resultDiv = document.getElementById('results');
+
+            if (!questionElement || !answerElement || !resultDiv) {
+                console.error("Necessary elements not found");
+                return;
+            }
+
+            const questionId = parseInt(questionElement.dataset.id);
+            const userAnswer = answerElement.value;
+            console.log('Question ID:',questionId);
+            console.log('User Answer:',userAnswer);
+
+            const payload = JSON.stringify({id: questionId, answer: userAnswer });
+            console.log('Payload:', payload);
+            
+            try {
+                const response = await fetch('/api/answer', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: payload
+                });
+
+                if (!response.ok) {
+                    console.error("Failed to submit answer. Status:", response.status);
+                    return;
+                }
+
+                const result = await response.json();
+
+                if (result.correct) {
+                    resultDiv.innerText = 'Correct!';
+                    resultDiv.style.color = 'green';
+                } else {
+                    resultDiv.innerText = `Incorrect. The correct answer is ${result.correct_answer}`;
+                    resultDiv.style.color = 'red';
+                }
+            } catch (error) {
+                console.error('There wsas a problem with the fetch operation:', error);
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', (event) => {
+            async function getQuestion() {
+                const response = await fetch('/api/trivia');
+                const question = await response.json();
+                const questionElement = document.getElementById('question');
+                
+                if (questionElement) {
+                    questionElement.innerText = question.question;
+                    questionElement.dataset.id = question.id;
+                } else {
+                    console.error("Question element not found");
+                }
+            }
+            getQuestion();
+        });
+    </script>
+</body>
+</html>
