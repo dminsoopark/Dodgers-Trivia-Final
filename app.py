@@ -33,8 +33,9 @@ def get_daily_question():
     return random.choice(questions)
 
 @app.route('/')
-@login_required
 def home():
+    if 'streak' not in session:
+        session['streak'] = 0
     return render_template('index.html')
 
 @app.route('/login', methods=['GET', 'POST'])
