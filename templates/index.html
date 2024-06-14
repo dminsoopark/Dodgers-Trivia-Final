@@ -15,10 +15,12 @@
 
     {% block content %}
     <div id="app">
-        <h1>Dodgers Trivia</h1>
+        <h1 id="title">Dodgers Trivia</h1>
         <div id="question"></div>
-        <input type="text" id="answer" placeholder="Your answer">
-        <button onclick="submitAnswer()">Submit</button>
+        <div class="input-container">
+            <input type="text" id="answer" placeholder="Your answer">
+            <button onclick="submitAnswer()">Submit</button>
+        </div>
         <div id="results"></div>
     </div>
     <script>
@@ -59,10 +61,13 @@
                 if (result.correct) {
                     resultDiv.innerText = 'Correct!';
                     resultDiv.style.color = 'green';
+                    resultDiv.classList.add('correct');
                 } else {
                     resultDiv.innerText = `Incorrect. The correct answer is ${result.correct_answer}`;
                     resultDiv.style.color = 'red';
+                    resultDiv.classList.add('incorrect');
                 }
+
             } catch (error) {
                 console.error('There wsas a problem with the fetch operation:', error);
             }

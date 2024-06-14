@@ -4,16 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='loginstyle.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='dodgers_logo.png') }}">
 </head>
 <body>
-    <h1>Login</h1>
-    <form method="post" action="{{ url_for('login') }}">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-        <button type="submit">Login</button>
-    </form>
-    <p>Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
+    <div id="content">
+        <h1>Welcome to Dodgers Trivia!</h1>
+        <h2>Please login or create an account below to continue</h2>
+        <form method="post" action="{{ url_for('login') }}">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
+    </div>
 </body>
 </html>
